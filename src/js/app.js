@@ -1,3 +1,4 @@
+import { SplashScreen } from '@capacitor/splash-screen';
 import { Game } from './Game.js';
 import interact from 'interactjs';
 
@@ -50,7 +51,9 @@ import interact from 'interactjs';
 	game.footer.statsScreen.render();
 	game.footer.liveStats.render();
 
-	console.log('game', game);
+	// console.log('game', game);
+
+	SplashScreen.hide();
 
 	window.game = game;
 
