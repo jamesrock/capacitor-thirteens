@@ -17,7 +17,7 @@ body {
 	background-repeat: no-repeat;
 	height: 100vh;
 	height: 100dvh;
-	padding: var(--body-padding);
+	padding: var(--safe-area-top) var(--body-padding) var(--safe-area-bottom);
 	box-sizing: border-box;
 	user-select: none;
 	-webkit-user-select: none;
@@ -92,7 +92,7 @@ body {
 
 .footer {
 	position: fixed;
-	bottom: var(--bottom-margin);
+	bottom: var(--safe-area-bottom);
 	left: var(--body-padding);
 	right: var(--body-padding);
 	

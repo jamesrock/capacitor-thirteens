@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Game } from './Game.js';
 import interact from 'interactjs';
@@ -15,10 +16,13 @@ import interact from 'interactjs';
 	xGap = mobile ? 2 : 4,
 	yGap = (fontSize + (cardPadding * 2)),
 	columnCount = 8,
+	platform = Capacitor.getPlatform(),
+	// platform = 'ios',
+	safeAreaTop = (platform==='ios' ? 60 : padding),
+	safeAreaBottom = (platform==='ios' ? 40 : padding),
 	cardWidth = ((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
 	cardHeight = (cardWidth * 1.4),
-	columnHeight = (window.innerHeight - (padding * 2)),
-	bottomMargin = navigator.standalone ? 40 : padding,
+	columnHeight = (window.innerHeight - ((safeAreaTop + safeAreaBottom))),
 	game = new Game(xGap, yGap, cardWidth, cardHeight),
 	root = document.querySelector(':root'),
 	savedGame = game.getSaved(),
@@ -32,8 +36,9 @@ import interact from 'interactjs';
 	root.style.setProperty('--border-rdius', `${borderRadius}px`);
 	root.style.setProperty('--column-height', `${columnHeight}px`);
 	root.style.setProperty('--body-padding', `${padding}px`);
+	root.style.setProperty('--safe-area-top', `${safeAreaTop}px`);
+	root.style.setProperty('--safe-area-bottom', `${safeAreaBottom}px`);
 	root.style.setProperty('--font-size', `${fontSize}px`);
-	root.style.setProperty('--bottom-margin', `${bottomMargin}px`);
 
 	game.table.appendTo(document.body);
 	game.footer.appendTo(document.body);
