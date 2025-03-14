@@ -7,7 +7,7 @@ import interact from 'interactjs';
 	query = window.matchMedia('(max-width: 600px)'),
 	mobile = query.matches,
 	fontSize = mobile ? 17 : 20,
-	iconSize = mobile ? 2.25 : 3.5,
+	iconSize = mobile ? 35 : 150,
 	padding = mobile ? 5 : 20,
 	cardPadding = mobile ? 3 : 7,
 	borderRadius = mobile ? 5 : 10,
@@ -24,7 +24,7 @@ import interact from 'interactjs';
 	group = [],
 	position = { x: 0, y: 0 };
 
-	root.style.setProperty('--icon-size', `${iconSize}em`);
+	root.style.setProperty('--icon-size', `${iconSize}px`);
 	root.style.setProperty('--card-width', `${cardWidth}px`);
 	root.style.setProperty('--card-height', `${cardHeight}px`);
 	root.style.setProperty('--card-padding', `${cardPadding}px`);
