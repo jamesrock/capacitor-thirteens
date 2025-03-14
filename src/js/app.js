@@ -65,7 +65,7 @@ import interact from 'interactjs';
 		listeners: {
 			start(event) {
 				
-				console.log(event.type, event.target);
+				// console.log(event.type, event.target);
 				position = { x: event.target.offsetLeft, y: event.target.offsetTop };
 
 				const card = game.cards.map[event.target.dataset.id];
@@ -73,23 +73,23 @@ import interact from 'interactjs';
 				const index = column.indexOf(card.id);
 				let plus = 1;
 				let next = game.cards.map[column[index + plus]];
-				console.log('card', card);
-				console.log('next', next);
+				// console.log('card', card);
+				// console.log('next', next);
 
 				group = [card];
 
 				while(next && ((game.cards.map[group[plus - 1].id].rawValue - next.rawValue) >= 1) && next.color !== game.cards.map[group[plus - 1].id].color) {
-					console.log('is at least one less and alternate colour!');
+					// console.log('is at least one less and alternate colour!');
 					group.push(next);
 					plus += 1;
 					next = game.cards.map[column[index + plus]];
 				};
 
 				if(group[group.length - 1].id === column[column.length - 1]) {
-					console.log('last card is last, good to go!');
+					// console.log('last card is last, good to go!');
 				}
 				else {
-					console.log('cannot move!');
+					// console.log('cannot move!');
 					group = [];
 					return;
 				};
@@ -115,7 +115,7 @@ import interact from 'interactjs';
 		accept: '.card',
 		ondrop: function(event) {
 
-			console.log('dropped onto column', event.target);
+			// console.log('dropped onto column', event.target);
 			const column = game.columns.columns[event.target.dataset.id];
 			const firstCard = group.length && group[0];
 			const lastCard = column.length && game.cards.map[column[column.length - 1]];
@@ -127,7 +127,7 @@ import interact from 'interactjs';
 			// console.log('lastCard', lastCard);
 			
 			if(diff >= 0 || isColorMatch) {
-				console.log('cannot be moved into this column!');
+				// console.log('cannot be moved into this column!');
 				group.forEach(function(card) {
 					card.setDropped(true);
 				});
@@ -149,7 +149,7 @@ import interact from 'interactjs';
 	interact('.table').dropzone({
 		accept: '.card',
 		ondrop: function(event) {
-			console.log('dropped onto table', event.target);
+			// console.log('dropped onto table', event.target);
 			group.forEach(function(card) {
 				card.setDropped(true);
 			});
@@ -159,12 +159,12 @@ import interact from 'interactjs';
 
 	document.addEventListener('visibilitychange', function() {
 		if(document.hidden) {
-			console.log('hidden');
+			// console.log('hidden');
 			game.footer.liveStats.stop();
 			game.save();
 		} 
 		else {
-			console.log('shown');
+			// console.log('shown');
 			savedGame = game.getSaved();
 			game.setDuration(savedGame[3]);
 			game.footer.liveStats.render();

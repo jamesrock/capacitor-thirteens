@@ -4,7 +4,7 @@ import { StatsScreen } from './StatsScreen.js';
 export class Footer {
   constructor(game) {
 
-    console.log(`new Footer()`, this);
+    // console.log(`new Footer()`, this);
     this.statsScreen = new StatsScreen(game);
     this.liveStats = new LiveStats(game);
     this.game = game;

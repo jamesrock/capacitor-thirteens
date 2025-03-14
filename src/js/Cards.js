@@ -3,7 +3,7 @@ import { Card } from './Card.js';
 export class Cards {
   constructor(game) {
 
-    console.log(`new Cards()`, this);
+    // console.log(`new Cards()`, this);
     this.game = game;
     this.cards = this.make();
     this.map = this.makeMap();
@@ -78,7 +78,7 @@ export class Cards {
     }, 0);
 
     const eventHandler = (e) => {
-      console.log('eventHandler', this, e.target);
+      // console.log('eventHandler', this, e.target);
       this.clearDelays();
       e.target.removeEventListener('transitionend', eventHandler);
     };
@@ -89,7 +89,7 @@ export class Cards {
   };
   clearDelays() {
 
-    console.log('clearDelays');
+    // console.log('clearDelays');
     this.game.cards.cards.forEach(function(card) {
       card.setDelay(0);
     });

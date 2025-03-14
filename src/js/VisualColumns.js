@@ -1,7 +1,7 @@
 export class VisualColumns {
   constructor(game) {
 
-    console.log(`new VisualColumns()`, this);
+    // console.log(`new VisualColumns()`, this);
     this.game = game;
     this.columns = this.make();
 

@@ -1,7 +1,7 @@
 export class Columns {
   constructor(game, columns) {
 
-    console.log(`new Columns()`, this);
+    // console.log(`new Columns()`, this);
     this.game = game;
     this.columns = columns ? columns : this.make();
 

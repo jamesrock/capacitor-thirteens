@@ -8,7 +8,7 @@ import { Table } from './Table.js';
 export class Game {
   constructor(xGap, yGap, cardWidth, cardHeight) {
 
-    console.log(`new Game()`, this);
+    // console.log(`new Game()`, this);
     this.xGap = xGap;
     this.yGap = yGap;
     this.cardWidth = cardWidth;
@@ -50,7 +50,7 @@ export class Game {
 
     if(!this.time && this.checkForWin()) {
 
-      console.log('win!');
+      // console.log('win!');
 
       this.time = this.duration.get();
 
@@ -71,15 +71,15 @@ export class Game {
 
     };
 
-    console.log(`saves[${saves.length}]`, saves);
-    console.log(`moves`, moves);
+    // console.log(`saves[${saves.length}]`, saves);
+    // console.log(`moves`, moves);
 
     return saves;
 
   };
   startNew() {
 
-    console.log('startNew');
+    // console.log('startNew');
     this.columns = new Columns(this);
     this.shuffledMap = this.cards.makeShuffledMap();
     this.reset();
@@ -90,7 +90,7 @@ export class Game {
 
     const savedGame = this.getSaved();
 
-    console.log('openSaved');
+    // console.log('openSaved');
     this.saves = savedGame[0];
     this.columns = new Columns(this, JSON.parse(this.saves[this.saves.length - 1]));
     this.moves = savedGame[1];
@@ -100,7 +100,7 @@ export class Game {
     this.bestTime = savedGame[5];
     this.updateColumns();
 
-    console.log('time/duration', savedGame[3]);
+    // console.log('time/duration', savedGame[3]);
 
   };
   reset() {
@@ -120,7 +120,7 @@ export class Game {
       return;
     };
 
-    console.log('restart', this);
+    // console.log('restart', this);
     this.columns = new Columns(this, JSON.parse(this.saves[0]));
     this.reset();
     this.updateColumns(true);
@@ -129,13 +129,13 @@ export class Game {
   updateColumns(toDeal) {
 
     const flattenedColumns = this.columns.flatten();
-    console.log('flattenedColumns', flattenedColumns);
+    // console.log('flattenedColumns', flattenedColumns);
 
     const cardsMap = this.cards.map;
 
     if(flattenedColumns.length) {
 
-      console.log('columns already defined');
+      // console.log('columns already defined');
 
       this.columns.columns.forEach(function(column, index) {
         column.forEach(function(id) {
@@ -146,7 +146,7 @@ export class Game {
     }
     else {
 
-      console.log('columns NOT already defined');
+      // console.log('columns NOT already defined');
 
       let column = 0;
       const $this = this;
@@ -181,7 +181,7 @@ export class Game {
       return;
     };
 
-    console.log('undo');
+    // console.log('undo');
     this.saves.pop();
     this.columns = new Columns(this, JSON.parse(this.saves.pop()));
     this.updateColumns();

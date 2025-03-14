@@ -1,7 +1,7 @@
 export class Table {
   constructor() {
 
-    console.log(`new Table()`, this);
+    // console.log(`new Table()`, this);
     this.node = this.make();
 
   };

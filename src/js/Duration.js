@@ -3,7 +3,7 @@ import { Time } from './Time.js';
 export class Duration {
   constructor(lapsed = 0) {
 
-    console.log(`new Duration(${lapsed})`, this);
+    // console.log(`new Duration(${lapsed})`, this);
     this.started = this.getTime();
     this.lapsed = lapsed;
 
