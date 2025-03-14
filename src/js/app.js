@@ -17,7 +17,6 @@ import interact from 'interactjs';
 	yGap = (fontSize + (cardPadding * 2)),
 	columnCount = 8,
 	platform = Capacitor.getPlatform(),
-	// platform = 'ios',
 	safeAreaTop = (platform==='ios' ? 60 : padding),
 	safeAreaBottom = (platform==='ios' ? 40 : padding),
 	cardWidth = ((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
