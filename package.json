@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-app",
+  "name": "capacitor-thirteens",
   "version": "1.0.0",
   "description": "An Amazing Capacitor App",
   "type": "module",
@@ -13,10 +13,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@capacitor/camera": "latest",
     "@capacitor/core": "latest",
     "@capacitor/ios": "^7.1.0",
-    "@capacitor/splash-screen": "latest"
+    "@capacitor/splash-screen": "latest",
+    "interactjs": "^1.10.27",
+    "sass": "^1.85.1"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
