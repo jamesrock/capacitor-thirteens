@@ -98,7 +98,7 @@ import interact from 'interactjs';
 					card.setDropped(false).setZIndex(52 + index);
 				});
 				
-				console.log(group);
+				// console.log(group);
 
 			},
 			move(event) {
