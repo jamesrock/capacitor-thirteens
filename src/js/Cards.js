@@ -1,3 +1,4 @@
+import { shuffle } from '@jamesrock/rockjs';
 import { Card } from './Card.js';
 
 export class Cards {
@@ -37,12 +38,7 @@ export class Cards {
   };
   shuffle(cards) {
 
-    for (let i = 0; i < cards.length; i++) {
-      let shuffle = Math.floor(Math.random() * (cards.length));
-      [cards[i], cards[shuffle]] = [cards[shuffle], cards[i]];
-    };
-
-    return cards;
+    return shuffle(cards);
 
   };
   makeShuffledMap() {
