@@ -1,28 +1,25 @@
 {
   "name": "capacitor-thirteens",
   "version": "1.0.0",
-  "description": "An Amazing Capacitor App",
   "type": "module",
-  "keywords": [
-    "capacitor",
-    "mobile"
-  ],
   "scripts": {
     "start": "vite",
+    "host": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync": "npm run build && npx cap sync",
+    "open": "npx cap open ios"
   },
   "dependencies": {
     "@capacitor/core": "latest",
     "@capacitor/ios": "^7.1.0",
     "@capacitor/splash-screen": "latest",
-    "@jamesrock/rockjs": "^1.5.0",
-    "interactjs": "^1.10.27",
-    "sass": "^1.85.1"
+    "@jamesrock/rockjs": "^1.9.0",
+    "interactjs": "^1.10.27"
   },
   "devDependencies": {
     "@capacitor/cli": "latest",
-    "vite": "^5.4.2"
+    "vite": "^7.3.1"
   },
   "author": "James Rock",
   "license": "ISC"
