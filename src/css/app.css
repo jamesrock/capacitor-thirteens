@@ -60,14 +60,14 @@ body {
 	&.black {
 		color: black;
 	}
-	&-value {
+	.card-value {
 		padding: 0 1px;
 		letter-spacing: -2px;
 		line-height: 1;
 		display: flex;
 		justify-content: space-between;
 	}
-	&-suit {
+	.card-suit {
 		position: absolute;
 		top: calc(50% + 12px);
 		left: 50%;
