@@ -1,4 +1,6 @@
-import { Time } from './Time.js';
+import { Time } from '@jamesrock/rockjs';
+
+const time = new Time();
 
 export class StatsScreen {
   constructor(game) {
@@ -39,7 +41,7 @@ export class StatsScreen {
 
     this.node.innerHTML = `\
       <div>
-        <div>best time: ${bestTime ? new Time(bestTime).toDisplay() : '-'}</div>\
+        <div>best time: ${bestTime ? time.format(bestTime) : '-'}</div>\
         <div>best moves: ${bestMoves ? bestMoves : '-'}</div>\
       </div>`;
 

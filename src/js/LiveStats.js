@@ -1,4 +1,6 @@
-import { Time } from './Time.js';
+import { Time } from '@jamesrock/rockjs';
+
+const time = new Time();
 
 export class LiveStats {
   constructor(game) {
@@ -26,7 +28,7 @@ export class LiveStats {
     this.node.innerHTML = `\
       <div>moves: ${this.game.moves}</div>\
       ${this.game.newBest ? `<div>${this.getNewBestNotification()}</div>` : ''}\
-      <div>${this.game.time ? new Time(this.game.time).toDisplay() : this.game.duration.getDisplay()}</div>`;
+      <div>${this.game.time ? time.format(this.game.time) : this.game.duration.getDisplay()}</div>`;
 
     this.frameRequest = requestAnimationFrame(function () {
       $this.render();

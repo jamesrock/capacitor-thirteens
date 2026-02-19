@@ -1,3 +1,8 @@
+import { 
+  Storage,
+  getLast,
+  getFirst
+ } from '@jamesrock/rockjs';
 import { Cards } from './Cards.js';
 import { Columns } from './Columns.js';
 import { Footer } from './Footer.js';
@@ -18,14 +23,15 @@ export class Game {
     this.visualColumns = new VisualColumns(this);
     this.footer = new Footer(this);
     this.table = new Table();
+    this.storage = new Storage(this.namespace);
 
   };
   save() {
 
-    const stringified = JSON.stringify(this.columns.columns);
+    const data = JSON.stringify(this.columns.columns);
 
-    if(this.saves.length === 0 || this.saves[this.saves.length - 1] !== stringified) {
-      this.saves.push(stringified);
+    if(this.saves.length === 0 || !(getLast(this.saves) === data)) {
+      this.saves.push(data);
       this.moves ++;
     };
 
@@ -39,14 +45,14 @@ export class Game {
       bestTime
     } = this;
 
-    localStorage.setItem(this.namespace, JSON.stringify([
+    this.storage.set('game', [
       saves,
       moves,
       shuffledMap,
       time ? time : duration.get(),
       bestMoves,
       bestTime
-    ]));
+    ]);
 
     if(!this.time && this.checkForWin()) {
 
@@ -79,28 +85,37 @@ export class Game {
   };
   startNew() {
 
-    // console.log('startNew');
     this.columns = new Columns(this);
     this.shuffledMap = this.cards.makeShuffledMap();
     this.reset();
     this.updateColumns(true);
 
   };
-  openSaved() {
+  openSaved(game) {
 
-    const savedGame = this.getSaved();
-
-    // console.log('openSaved');
-    this.saves = savedGame[0];
-    this.columns = new Columns(this, JSON.parse(this.saves[this.saves.length - 1]));
-    this.moves = savedGame[1];
-    this.shuffledMap = savedGame[2];
-    this.duration = new Duration(savedGame[3]);
-    this.bestMoves = savedGame[4];
-    this.bestTime = savedGame[5];
+    this.saves = game[0];
+    this.columns = new Columns(this, this.getLastSave());
+    this.moves = game[1];
+    this.shuffledMap = game[2];
+    this.duration = new Duration(game[3]);
+    this.bestMoves = game[4];
+    this.bestTime = game[5];
     this.updateColumns();
 
-    // console.log('time/duration', savedGame[3]);
+  };
+  getLastSave() {
+    
+    return JSON.parse(getLast(this.saves));
+
+  };
+  getFirstSave() {
+    
+    return JSON.parse(getFirst(this.saves));
+
+  };
+  popSave() {
+    
+    return JSON.parse(this.saves.pop());
 
   };
   reset() {
@@ -121,7 +136,7 @@ export class Game {
     };
 
     // console.log('restart', this);
-    this.columns = new Columns(this, JSON.parse(this.saves[0]));
+    this.columns = new Columns(this, this.getFirstSave());
     this.reset();
     this.updateColumns(true);
 
@@ -183,7 +198,7 @@ export class Game {
 
     // console.log('undo');
     this.saves.pop();
-    this.columns = new Columns(this, JSON.parse(this.saves.pop()));
+    this.columns = new Columns(this, this.popSave());
     this.updateColumns();
 
   };
@@ -201,7 +216,7 @@ export class Game {
   };
   getSaved() {
 
-    return JSON.parse(localStorage.getItem(this.namespace));
+    return this.storage.get('game');
 
   };
   render() {
@@ -225,7 +240,7 @@ export class Game {
 
   };
   columnsToCheckForWin = [0, 1, 2, 3];
-  namespace = 'thirteens.jamesrock.me';
+  namespace = 'me.jamesrock.thirteens';
   bestMoves = 0;
   bestTime = 0;
 };

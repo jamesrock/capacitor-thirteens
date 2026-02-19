@@ -1,12 +1,12 @@
 import '../css/app.css';
+import { minWidth } from '@jamesrock/rockjs';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Game } from './Game.js';
 import interact from 'interactjs';
 
 var
-query = window.matchMedia('(max-width: 600px)'),
-mobile = query.matches,
+mobile = !minWidth(700),
 fontSize = mobile ? 17 : 20,
 iconSize = mobile ? 35 : 150,
 padding = mobile ? 5 : 20,
@@ -16,13 +16,16 @@ xGap = mobile ? 2 : 4,
 yGap = (fontSize + (cardPadding * 2)),
 columnCount = 8,
 platform = Capacitor.getPlatform(),
-safeAreaTop = (platform==='ios' ? 60 : padding),
-safeAreaBottom = (platform==='ios' ? 40 : padding),
+checkPlatform = () => {
+	return window.navigator.standalone || platform==='ios';
+},
+safeAreaTop = (checkPlatform() ? 60 : padding),
+safeAreaBottom = (checkPlatform() ? 40 : padding),
 cardWidth = ((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
 cardHeight = (cardWidth * 1.4),
 columnHeight = (window.innerHeight - ((safeAreaTop + safeAreaBottom))),
 game = new Game(xGap, yGap, cardWidth, cardHeight),
-root = document.querySelector(':root'),
+root = document.documentElement,
 savedGame = game.getSaved(),
 group = [],
 position = { x: 0, y: 0 };
@@ -45,7 +48,7 @@ game.visualColumns.render(game.table);
 game.cards.render(game.table);
 
 if(savedGame) {
-	game.openSaved();
+	game.openSaved(savedGame);
 }
 else {
 	game.startNew();

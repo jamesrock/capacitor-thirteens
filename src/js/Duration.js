@@ -1,4 +1,6 @@
-import { Time } from './Time.js';
+import { Time } from '@jamesrock/rockjs';
+
+const time = new Time();
 
 export class Duration {
   constructor(lapsed = 0) {
@@ -20,7 +22,7 @@ export class Duration {
   };
   getDisplay() {
 
-    return new Time(this.get()).toDisplay();
+    return time.format(this.get());
 
   };
 };
