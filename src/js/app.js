@@ -1,9 +1,14 @@
 import '../css/app.css';
-import { minWidth } from '@jamesrock/rockjs';
+import { 
+	minWidth,
+	setDocumentHeight
+} from '@jamesrock/rockjs';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Game } from './Game.js';
 import interact from 'interactjs';
+
+setDocumentHeight();
 
 var
 mobile = !minWidth(700),
@@ -24,7 +29,7 @@ safeAreaBottom = (checkPlatform() ? 40 : padding),
 cardWidth = ((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
 cardHeight = (cardWidth * 1.4),
 columnHeight = (window.innerHeight - ((safeAreaTop + safeAreaBottom))),
-game = new Game(xGap, yGap, cardWidth, cardHeight),
+game = window.game = new Game(xGap, yGap, cardWidth, cardHeight),
 root = document.documentElement,
 savedGame = game.getSaved(),
 group = [],
@@ -60,8 +65,6 @@ game.footer.liveStats.render();
 // console.log('game', game);
 
 SplashScreen.hide();
-
-window.game = game;
 
 interact('.card').draggable({
 	listeners: {
