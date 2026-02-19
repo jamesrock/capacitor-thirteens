@@ -1,7 +1,9 @@
 import '../css/app.css';
 import { 
 	minWidth,
-	setDocumentHeight
+	setDocumentHeight,
+	floorTo,
+	limit
 } from '@jamesrock/rockjs';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -11,9 +13,9 @@ import interact from 'interactjs';
 setDocumentHeight();
 
 var
+root = document.documentElement,
 mobile = !minWidth(700),
 fontSize = mobile ? 17 : 20,
-iconSize = mobile ? 35 : 150,
 padding = mobile ? 5 : 20,
 cardPadding = mobile ? 3 : 7,
 borderRadius = mobile ? 5 : 10,
@@ -26,11 +28,11 @@ checkPlatform = () => {
 },
 safeAreaTop = (checkPlatform() ? 60 : padding),
 safeAreaBottom = (checkPlatform() ? 40 : padding),
-cardWidth = ((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
-cardHeight = (cardWidth * 1.4),
+cardWidth = floorTo((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
+cardHeight = floorTo(cardWidth * 1.4),
 columnHeight = (window.innerHeight - ((safeAreaTop + safeAreaBottom))),
+iconSize = limit(floorTo(cardWidth - 10), 80),
 game = window.game = new Game(xGap, yGap, cardWidth, cardHeight),
-root = document.documentElement,
 savedGame = game.getSaved(),
 group = [],
 position = { x: 0, y: 0 };
