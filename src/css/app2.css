@@ -1,0 +1,120 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+:root {
+	--white: floralwhite;
+}
+
+body {
+  font-family: sans-serif;
+	font-size: var(--font-size);
+  text-align: center;
+	color: var(--white);
+	background-color: rgb(0, 106, 0);
+	background-image: radial-gradient(rgb(0, 190, 0), rgb(0, 106, 0));
+	background-repeat: no-repeat;
+	height: 100%;
+	padding: var(--safe-area-top) var(--body-padding) var(--safe-area-bottom);
+	box-sizing: border-box;
+	user-select: none;
+	-webkit-user-select: none;
+	touch-action: none;
+}
+
+.table {
+	position: relative;
+	height: var(--column-height);
+	width: var(--table-width);
+	margin: 0 auto;
+}
+
+.card {
+	border: solid 1px rgb(170, 170, 170);
+	background-color: var(--white);
+	box-sizing: border-box;
+	position: absolute;
+	box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	aspect-ratio: 250/350;
+	&[data-dropped="true"] {
+		transition: top 0.25s, left 0.25s;
+	}
+	svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+}
+
+.column {
+	height: var(--column-height);
+	position: absolute;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.2), transparent 50%);
+	box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
+	mask-image: linear-gradient(black, transparent 50%);
+}
+
+.column,
+.card,
+.base {
+	width: var(--card-width);
+	border-radius: var(--border-radius);
+}
+
+.footer {
+	position: fixed;
+	bottom: var(--safe-area-bottom);
+	left: var(--body-padding);
+	right: var(--body-padding);
+	
+}
+
+.actions {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-radius: var(--border-radius);
+	padding: 4px 10px 5px;
+}
+
+.stats {
+	padding: 4px;
+	font-size: 0.8em;
+	text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+}
+
+.actions,
+.stats {
+	display: flex;
+	justify-content: space-between;
+}
+
+button {
+	background-color: transparent;
+	color: inherit;
+	border: 0;
+	font-size: 1em;
+	cursor: pointer;
+	padding: 5px;
+	letter-spacing: 0.25px;
+	&:active {
+		color: yellow;
+	}
+}
+
+.stats-screen {
+	font-size: 0.8em;
+	display: flex;
+	transition: margin-bottom .25s, opacity .25s;
+	justify-content: center;
+	align-items: center;
+	height: 100px;
+	text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+	&[data-open="false"] {
+		margin-bottom: -100px;
+		opacity: 0;
+	}
+	&[data-open="true"] {
+		margin-bottom: 0;
+		opacity: 1;
+	}
+}
