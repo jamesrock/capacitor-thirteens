@@ -81,14 +81,10 @@ export class Columns {
 
   };
   render() {
-
-    const {
-      columnHeight
-    } = this.game;
     
     const values = {
       x: this.game.getXValues(),
-      y: [0,0,0,0,columnHeight,columnHeight,columnHeight,columnHeight],
+      y: this.game.getYValues(),
     };
 
     this.flattenedColumns = this.flatten();

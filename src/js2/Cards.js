@@ -1,5 +1,5 @@
 import { shuffle, makeArray, getRandom, getLast } from '@jamesrock/rockjs';
-import { Card } from './Card.js';
+import { Card } from './Card';
 
 export class Cards {
   constructor(game, map) {

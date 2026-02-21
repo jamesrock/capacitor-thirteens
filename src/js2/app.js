@@ -1,46 +1,49 @@
 import '../css/app2.css';
 import { 
+	isPortrait,
 	minWidth,
 	setDocumentHeight,
 	floorTo,
 	getLast,
 	getFirst,
+	getXAsPercentOfY,
+	getXPercentOfY,
 	limit
 } from '@jamesrock/rockjs';
 import { Capacitor } from '@capacitor/core';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Game } from './Game.js';
+import { Game } from './Game';
 import interact from 'interactjs';
 
 setDocumentHeight();
 
-var
+const
 root = document.documentElement,
 mobile = !minWidth(700),
-fontSize = mobile ? 17 : 20,
 padding = mobile ? 5 : 20,
 cardPadding = mobile ? 3 : 7,
 borderRadius = mobile ? 5 : 10,
-xGap = mobile ? 10 : 20,
-yGap = 18,
-fakes = 2,
-columnCount = (4 + fakes),
+xGap = mobile ? 10 : 25,
+fakes = isPortrait() ? 1 : 0,
+columnCount = ((isPortrait() ? 4 : 8) + fakes),
 platform = Capacitor.getPlatform(),
 checkPlatform = () => {
 	return window.navigator.standalone || platform==='ios';
 },
-safeAreaTop = (checkPlatform() ? 60 : padding),
+safeAreaTop = (checkPlatform() ? 80 : padding),
 safeAreaBottom = (checkPlatform() ? 40 : padding),
-columnWidth = floorTo((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount),
-columnHeight = ((yGap * 16) + columnWidth*(350/250)),
+columnWidth = limit(floorTo((window.innerWidth - (padding * 2) - (xGap * (columnCount - 1))) / columnCount), 150),
+cardHeight = (columnWidth*(350/250)),
+yGap = getXPercentOfY(19, cardHeight),
+columnHeight = ((yGap * 16) + cardHeight),
 tableWidth = ((columnWidth * (columnCount - fakes)) + (xGap * (columnCount - (1+fakes)))),
-iconSize = floorTo(columnWidth - 10),
 game = window.game = new Game(xGap, yGap, columnWidth, columnHeight),
-savedGame = game.getSaved(),
+savedGame = game.getSaved();
+
+let
 group = [],
 position = { x: 0, y: 0 };
 
-root.style.setProperty('--icon-size', `${iconSize}px`);
 root.style.setProperty('--card-width', `${columnWidth}px`);
 root.style.setProperty('--card-padding', `${cardPadding}px`);
 root.style.setProperty('--border-radius', `${borderRadius}px`);
@@ -48,7 +51,6 @@ root.style.setProperty('--column-height', `${columnHeight}px`);
 root.style.setProperty('--body-padding', `${padding}px`);
 root.style.setProperty('--safe-area-top', `${safeAreaTop}px`);
 root.style.setProperty('--safe-area-bottom', `${safeAreaBottom}px`);
-root.style.setProperty('--font-size', `${fontSize}px`);
 root.style.setProperty('--table-width', `${tableWidth}px`);
 
 game.table.appendTo(document.body);
@@ -60,8 +62,6 @@ if(savedGame) {
 else {
 	game.startNew();
 };
-
-// game.startNew();
 
 game.footer.statsScreen.render();
 game.footer.liveStats.render();
@@ -179,3 +179,5 @@ document.addEventListener('visibilitychange', () => {
 		game.footer.liveStats.render();
 	};
 });
+
+console.log(getXAsPercentOfY(40, cardHeight));

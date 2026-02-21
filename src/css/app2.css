@@ -5,6 +5,7 @@
 
 :root {
 	--white: floralwhite;
+	--font-size: 16px;
 }
 
 body {
@@ -78,7 +79,6 @@ body {
 
 .stats {
 	padding: 4px;
-	font-size: 0.8em;
 	text-shadow: 0 0 2px rgba(0, 0, 0, .5);
 }
 

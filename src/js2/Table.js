@@ -1,3 +1,5 @@
+import { createNode } from '@jamesrock/rockjs';
+
 export class Table {
   constructor() {
 
@@ -7,9 +9,7 @@ export class Table {
   };
   make() {
 
-    const out = document.createElement('div');
-    out.classList.add('table');
-    return out;
+    return createNode('div', 'table');
 
   };
   appendTo(node) {

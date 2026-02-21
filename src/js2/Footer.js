@@ -1,5 +1,6 @@
-import { LiveStats } from './LiveStats.js';
-import { StatsScreen } from './StatsScreen.js';
+import { createButton } from '@jamesrock/rockjs';
+import { LiveStats } from './LiveStats';
+import { StatsScreen } from './StatsScreen';
 
 export class Footer {
   constructor(game) {
@@ -24,15 +25,11 @@ export class Footer {
     node.appendChild(actionsNode);
     this.statsScreen.appendTo(node);
 
-    this.getActions().forEach(function(action) {
+    this.getActions().forEach((action) => {
 
-      const
-      button = document.createElement('button');
+      const button = createButton(action.name, 'action');
 
-      button.innerHTML = action.name;
       button.addEventListener('click', action.handler);
-
-      button.classList.add('action');
 
       actionsNode.appendChild(button);
 
@@ -43,31 +40,29 @@ export class Footer {
   };
   getActions() {
 
-    const $this = this;
-
     return [
       {
         name: 'undo',
         handler: () => { 
-          $this.game.undo();
+          game.undo();
         }
       },
       {
         name: 'new',
         handler: () => {
-          $this.game.startNew();
+          game.startNew();
         }
       },
       {
         name: 'restart',
         handler: () => {
-          $this.game.restart();
+          game.restart();
         }
       },
       {
         name: 'stats',
         handler: () => {
-          $this.game.footer.statsScreen.toggle();
+          game.footer.statsScreen.toggle();
         }
       }
     ]

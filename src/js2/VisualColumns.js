@@ -15,28 +15,20 @@ export class VisualColumns {
   };
   render() {
 
-    const { columnWidth, columnHeight, xGap, table } = this.game;
-    let x = 0;
-    let y = 0;
+    const { table } = this.game;
+    const xValues = this.game.getXValues();
+    const yValues = this.game.getYValues();
 
     this.columns.forEach((column, index) => {
 
       const node = createNode('div', 'column');
 
-      node.style.left = `${x}px`;
-      node.style.top = `${y}px`;
+      node.style.left = `${xValues[index]}px`;
+      node.style.top = `${yValues[index]}px`;
 
       node.setAttribute('data-id', index);
 
       table.node.appendChild(node);
-
-      if((index + 1) % 4 === 0) {
-        y += columnHeight;
-        x = 0;
-      }
-      else {
-        x += (columnWidth + xGap);
-      };
 
     });
 

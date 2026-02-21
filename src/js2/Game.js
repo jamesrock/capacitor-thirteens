@@ -2,6 +2,7 @@ import {
   Storage,
   getLast,
   getFirst,
+  isPortrait,
   makeArray
  } from '@jamesrock/rockjs';
 import { Cards } from './Cards';
@@ -254,7 +255,18 @@ export class Game {
       columnWidth,
     } = this;
 
-    return [0, 1, 2, 3, 0, 1, 2, 3].map((a) => ((columnWidth + xGap) * a));
+    const bob = isPortrait() ? [0,1,2,3,0,1,2,3] : [0,1,2,3,4,5,6,7];
+
+    return bob.map((a) => ((columnWidth + xGap) * a));
+
+  };
+  getYValues() {
+
+    const {
+      columnHeight
+    } = this;
+
+    return isPortrait() ? [0,0,0,0,columnHeight,columnHeight,columnHeight,columnHeight] : [0,0,0,0,0,0,0,0];
 
   };
   columnsToCheckForWin = [0, 1, 2, 3];
