@@ -5,4 +5,10 @@ export class DisplayObject {
     return this;
 
   };
+  setProp(key, value) {
+    
+    this.node.dataset[key] = value;
+    return this;
+
+  };
 };

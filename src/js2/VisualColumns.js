@@ -9,7 +9,7 @@ class VisualColumn extends DisplayObject {
     this.id = id;
     
     const node = this.node = createNode('div', 'column');
-    node.setAttribute('data-id', id);
+    node.setAttribute('data-id', this.id);
 
   };
   setPosition(x, y) {

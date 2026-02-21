@@ -1,21 +1,13 @@
 import { createNode } from '@jamesrock/rockjs';
+import { DisplayObject } from './DisplayObject';
 
-export class Table {
+export class Table extends DisplayObject {
   constructor() {
 
+    super();
+
     // console.log(`new Table()`, this);
-    this.node = this.make();
-
-  };
-  make() {
-
-    return createNode('div', 'table');
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
-    return this;
+    this.node = createNode('div', 'table');
 
   };
 };

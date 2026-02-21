@@ -129,6 +129,8 @@ export class Game {
     this.newBestTime = false;
     this.newBest = false;
 
+    this.game.table.setProp('animate', false);
+
   };
   restart() {
 
@@ -261,8 +263,6 @@ export class Game {
       y = 0;
     };
 
-    console.log(longest);
-
     return isPortrait() ? [0,0,0,0,y,y,y,y] : [0,0,0,0,0,0,0,0];
 
   };
@@ -270,7 +270,7 @@ export class Game {
 
     [1,0,1,0,1,0].forEach((bob, index) => {
       setTimeout(() => {
-        this.table.node.dataset.flash = !!bob;
+        this.table.setProp('flash', !!bob);
       }, index*500);
     });
 

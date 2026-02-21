@@ -89,6 +89,10 @@ export class Cards {
       card.setDelay(0);
     });
 
+    this.game.table.setProp('animate', true);
+
+    return this;
+
   };
   destroy() {
     

@@ -26,7 +26,7 @@ body {
 
 .table {
 	position: relative;
-	height: var(--column-height);
+	height: 100%;
 	width: var(--table-width);
 	margin: 0 auto;
 }
@@ -52,12 +52,14 @@ body {
 }
 
 .column {
-	transition: top 0.25s;
 	height: var(--column-height);
 	position: absolute;
 	background-image: linear-gradient(rgba(0, 0, 0, 0.2), transparent 50%);
 	box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
 	mask-image: linear-gradient(black, transparent 50%);
+	[data-animate="true"] & {
+		transition: top 0.25s;
+	}
 }
 
 .column,
