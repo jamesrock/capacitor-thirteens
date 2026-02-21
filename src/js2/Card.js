@@ -118,9 +118,8 @@ export class Card extends DisplayObject {
 
     if(zIndex < this.node.style.zIndex) {
 
-      const node = this.node;
-      setTimeout(function () {
-        node.style.zIndex = zIndex;
+      setTimeout(() => {
+        this.node.style.zIndex = zIndex;
       }, 250);
 
       return this;
