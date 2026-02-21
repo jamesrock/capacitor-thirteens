@@ -40,8 +40,6 @@ export class Game {
 
     if(this.checkForWin()) {
 
-      console.log('win!');
-
       this.time = this.duration.get();
 
       if(this.moves < this.bestMoves || 500) {
@@ -56,7 +54,9 @@ export class Game {
         this.newBestTime = true;
       };
 
-      this.flash();
+      setTimeout(() => {
+        this.flash();
+      }, 500);
 
       this.footer.statsScreen.render();
 
@@ -100,6 +100,7 @@ export class Game {
     this.duration = new Duration(game[3]);
     this.bestMoves = game[4];
     this.bestTime = game[5];
+    this.fromSave = true;
 
     this.updateColumns();
 
@@ -128,6 +129,7 @@ export class Game {
     this.newBestMoves = false;
     this.newBestTime = false;
     this.newBest = false;
+    this.fromSave = false;
 
     this.table.setProp('animate', false);
 
@@ -138,13 +140,12 @@ export class Game {
       return;
     };
 
-    // console.log('restart', this);
     this.columns = new Columns(this, this.getFirstSave());
     this.reset();
     this.updateColumns();
 
   };
-  updateColumns() {
+  updateColumns(deal = true) {
 
     const flattenedColumns = this.columns.flatten();
     // console.log('flattenedColumns', flattenedColumns);
@@ -186,7 +187,13 @@ export class Game {
 
     };
 
-    this.cards.deal();
+    if(deal) {
+      this.cards.deal();
+    };
+
+    setTimeout(() => {
+      this.render();
+    }, 0);
 
   };
   undo() {
@@ -195,10 +202,9 @@ export class Game {
       return;
     };
 
-    // console.log('undo');
-    this.saves.pop();
+    this.popSave();
     this.columns = new Columns(this, this.popSave());
-    this.updateColumns();
+    this.updateColumns(false);
 
   };
   checkForWin() {
@@ -222,7 +228,10 @@ export class Game {
 
     this.columns.update();
     this.visualColumns.update();
-    this.save();
+    if(!this.fromSave) {
+      this.save();
+    };
+    this.fromSave = false;
     return this;
 
   };
@@ -268,8 +277,6 @@ export class Game {
   };
   flash() {
 
-    console.log('flash');
-
     [1,0,1,0,1,0].forEach((bob, index) => {
       setTimeout(() => {
         this.table.setProp('flash', !!bob);
@@ -283,4 +290,5 @@ export class Game {
   namespace = 'me.jamesrock.thirteens2';
   bestMoves = 0;
   bestTime = 0;
+  fromSave = false;
 };

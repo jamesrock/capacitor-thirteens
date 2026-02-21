@@ -65,7 +65,7 @@ export class Footer extends DisplayObject {
           game.footer.statsScreen.toggle();
         }
       }
-    ]
+    ];
 
   };
 };

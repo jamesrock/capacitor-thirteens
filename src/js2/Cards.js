@@ -41,7 +41,6 @@ export class Cards {
   };
   makeShuffledMap() {
 
-    // const suits = [getRandom(['C', 'S']), getRandom(['D', 'H'])];
     const suits = ['C', 'S', 'D', 'H'];
     return this.shuffle(this.cards.filter((card) => {
       return suits.includes(card.suit);
@@ -63,8 +62,6 @@ export class Cards {
   };
   deal() {
 
-    const { game } = this;
-
     this.render();
 
     const arranged = this.game.columns.arrange();
@@ -72,10 +69,6 @@ export class Cards {
     arranged.forEach((id, index) => {
       this.map[id].preDeal(index);
     });
-
-    setTimeout(() => {
-      game.render();
-    }, 0);
 
     const eventHandler = (e) => {
       this.clearDelays();
