@@ -41,6 +41,9 @@ body {
 	&[data-dropped="true"] {
 		transition: top 0.25s, left 0.25s;
 	}
+	[data-flash="true"] & {
+		opacity: 0;
+	}
 	svg {
 		width: 100%;
 		height: 100%;

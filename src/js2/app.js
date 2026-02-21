@@ -174,8 +174,8 @@ document.addEventListener('visibilitychange', () => {
 	} 
 	else {
 		// console.log('shown');
-		savedGame = game.getSaved();
-		game.setDuration(savedGame[3]);
+		const saved = game.getSaved();
+		game.setDuration(saved[3]);
 		game.footer.liveStats.render();
 	};
 });

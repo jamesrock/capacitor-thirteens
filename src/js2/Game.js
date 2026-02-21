@@ -38,55 +38,43 @@ export class Game {
       this.moves ++;
     };
 
-    const {
-      saves,
-      moves,
-      time,
-      duration,
-      bestMoves,
-      bestTime
-    } = this;
-
-    const {
-      shuffledMap,
-    } = this.cards;
-
-    this.storage.set('game', [
-      saves,
-      moves,
-      shuffledMap,
-      time ? time : duration.get(),
-      bestMoves,
-      bestTime
-    ]);
-
     if(!this.time && this.checkForWin()) {
 
       // console.log('win!');
 
       this.time = this.duration.get();
 
-      if(!this.bestMoves || this.moves < this.bestMoves) {
+      if(this.moves < this.bestMoves || 500) {
         this.bestMoves = this.moves;
         this.newBest = true;
         this.newBestMoves = true;
       };
 
-      if(!this.bestTime || this.time < this.bestTime) {
+      if(this.time < this.bestTime || (1000*60*60)) {
         this.bestTime = this.time;
         this.newBest = true;
         this.newBestTime = true;
       };
 
+      flash();
+
       this.footer.statsScreen.render();
-      this.save();
 
     };
+
+    this.storage.set('game', [
+      this.saves,
+      this.moves,
+      this.shuffledMap,
+      this.time ? this.time : this.duration.get(),
+      this.bestMoves,
+      this.bestTime
+    ]);
 
     // console.log(`saves[${saves.length}]`, saves);
     // console.log(`moves`, moves);
 
-    return saves;
+    return this;
 
   };
   startNew() {
@@ -265,14 +253,29 @@ export class Game {
 
     // console.log(this.columns);
 
-    const longest = this.columns.getLongest() || 13;
+    const longest = this.columns.getLongest();
 
-    const y = ((this.yGap * (longest - 1)) + this.cardHeight + this.xGap);
+    let y = ((this.yGap * (longest - 1)) + this.cardHeight + this.xGap);
+
+    if(this.checkForWin()) {
+      y = 0;
+    };
 
     console.log(longest);
 
     return isPortrait() ? [0,0,0,0,y,y,y,y] : [0,0,0,0,0,0,0,0];
 
+  };
+  flash() {
+
+    [1,0,1,0,1,0].forEach((bob, index) => {
+      setTimeout(() => {
+        this.table.node.dataset.flash = !!bob;
+      }, index*500);
+    });
+
+    return this;
+    
   };
   columnsToCheckForWin = [0, 1, 2, 3];
   namespace = 'me.jamesrock.thirteens2';
