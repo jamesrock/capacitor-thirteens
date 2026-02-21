@@ -1,9 +1,12 @@
-import { createButton } from '@jamesrock/rockjs';
+import { createButton, createContainer } from '@jamesrock/rockjs';
 import { LiveStats } from './LiveStats';
 import { StatsScreen } from './StatsScreen';
+import { DisplayObject } from './DisplayObject';
 
-export class Footer {
+export class Footer extends DisplayObject {
   constructor(game) {
+
+    super();
 
     // console.log(`new Footer()`, this);
     this.statsScreen = new StatsScreen(game);
@@ -15,11 +18,8 @@ export class Footer {
   make() {
 
     const
-    node = document.createElement('div'),
-    actionsNode = document.createElement('div');
-
-    node.classList.add('footer');
-    actionsNode.classList.add('actions');
+    node = createContainer('footer'),
+    actionsNode = createContainer('actions');
 
     this.liveStats.appendTo(node);
     node.appendChild(actionsNode);
@@ -66,12 +66,6 @@ export class Footer {
         }
       }
     ]
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
-    return this;
 
   };
 };

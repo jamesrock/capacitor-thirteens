@@ -1,9 +1,12 @@
 import { Time } from '@jamesrock/rockjs';
+import { DisplayObject } from './DisplayObject';
 
 const time = new Time();
 
-export class StatsScreen {
+export class StatsScreen extends DisplayObject {
   constructor(game) {
+
+    super();
 
     this.game = game;
     this.node = this.make();
@@ -23,13 +26,7 @@ export class StatsScreen {
   };
   update() {
 
-    this.node.setAttribute('data-open', this.active);
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
-    return this;
+    this.setProp('open', this.active);
 
   };
   render() {

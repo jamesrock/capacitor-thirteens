@@ -1,4 +1,5 @@
 import { createNode, createSVGNode } from '@jamesrock/rockjs';
+import { DisplayObject } from './DisplayObject';
 import sprite from '../img/sprite.svg';
 
 const 
@@ -51,8 +52,10 @@ rawValues = [
   13
 ];
 
-export class Card {
+export class Card extends DisplayObject {
   constructor(deck, suit, value) {
+
+    super();
 
     this.deck = deck;
     this.suit = suits[suit];
@@ -78,27 +81,28 @@ export class Card {
   };
   make() {
 
-    // var node = document.createElement('div');
-
-    // node.innerHTML = this.getDisplayName();
-
-    // node.classList.add('card');
-    // node.classList.add(this.color);
-
     const
-		node = this.node = createNode('div', 'card'),
+		node = createNode('div', 'card'),
     svg = createSVGNode('svg'),
 		use = createSVGNode('use');
 
 		use.setAttribute('href', `${sprite}#${this.suit}${this.value}`);
-
-    // node.style.backgroundImage = `url(${sprite}#${this.suit}${this.value})`;
 
     node.setAttribute('data-id', this.id);
     node.setAttribute('data-dropped', this.dropped);
 
     svg.append(use);
     node.append(svg);
+
+    return node;
+
+  };
+  make2() {
+
+    const node = createNode('div', 'card');
+
+    node.innerHTML = this.getDisplayName();
+    node.classList.add(this.color);
 
     return node;
 
@@ -131,12 +135,6 @@ export class Card {
 
     this.node.style.left = `${x}px`;
     this.node.style.top = `${y}px`;
-    return this;
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
     return this;
 
   };

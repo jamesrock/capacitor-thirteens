@@ -1,9 +1,12 @@
-import { Time } from '@jamesrock/rockjs';
+import { Time, createContainer } from '@jamesrock/rockjs';
+import { DisplayObject } from './DisplayObject';
 
 const time = new Time();
 
-export class LiveStats {
+export class LiveStats extends DisplayObject {
   constructor(game) {
+
+    super();
 
     this.game = game;
     this.node = this.make();
@@ -11,15 +14,7 @@ export class LiveStats {
   };
   make() {
 
-    const node = document.createElement('div');
-    node.classList.add('stats');
-    return node;
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
-    return this;
+    return createContainer('stats');
 
   };
   render() {
