@@ -19,14 +19,13 @@ export class LiveStats extends DisplayObject {
   };
   render() {
 
-    const $this = this;
     this.node.innerHTML = `\
       <div>moves: ${this.game.moves}</div>\
       ${this.game.newBest ? `<div>${this.getNewBestNotification()}</div>` : ''}\
       <div>${this.game.time ? time.format(this.game.time) : this.game.duration.getDisplay()}</div>`;
 
-    this.frameRequest = requestAnimationFrame(function () {
-      $this.render();
+    this.frameRequest = requestAnimationFrame(() => {
+      this.render();
     });
 
   };
