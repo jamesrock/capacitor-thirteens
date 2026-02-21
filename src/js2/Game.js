@@ -38,9 +38,9 @@ export class Game {
       this.moves ++;
     };
 
-    if(!this.time && this.checkForWin()) {
+    if(this.checkForWin()) {
 
-      // console.log('win!');
+      console.log('win!');
 
       this.time = this.duration.get();
 
@@ -56,7 +56,7 @@ export class Game {
         this.newBestTime = true;
       };
 
-      flash();
+      this.flash();
 
       this.footer.statsScreen.render();
 
@@ -79,11 +79,11 @@ export class Game {
   };
   startNew() {
 
-    this.reset();
-
     if(this.cards) {
       this.cards.destroy();
     };
+
+    this.reset();
 
     this.columns = new Columns(this);
     this.cards = new Cards(this);
@@ -129,7 +129,7 @@ export class Game {
     this.newBestTime = false;
     this.newBest = false;
 
-    this.game.table.setProp('animate', false);
+    this.table.setProp('animate', false);
 
   };
   restart() {
@@ -141,7 +141,7 @@ export class Game {
     // console.log('restart', this);
     this.columns = new Columns(this, this.getFirstSave());
     this.reset();
-    this.updateColumns(true);
+    this.updateColumns();
 
   };
   updateColumns() {
@@ -210,7 +210,7 @@ export class Game {
       count += columns[index].length;
     });
 
-    return count === 0;
+    return count === 0 && this.moves > 0;
 
   };
   getSaved() {
@@ -267,6 +267,8 @@ export class Game {
 
   };
   flash() {
+
+    console.log('flash');
 
     [1,0,1,0,1,0].forEach((bob, index) => {
       setTimeout(() => {

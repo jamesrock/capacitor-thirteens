@@ -66,8 +66,10 @@ export class Cards {
     const { game } = this;
 
     this.render();
+
+    const arranged = this.game.columns.arrange();
     
-    this.game.columns.arrange().forEach((id, index) => {
+    arranged.forEach((id, index) => {
       this.map[id].preDeal(index);
     });
 
@@ -80,7 +82,7 @@ export class Cards {
       e.target.removeEventListener('transitionend', eventHandler);
     };
 
-    this.map[getLast(this.shuffledMap)].node.addEventListener('transitionend', eventHandler);
+    this.map[getLast(arranged)].node.addEventListener('transitionend', eventHandler);
 
   };
   clearDelays() {

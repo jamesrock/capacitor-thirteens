@@ -19,6 +19,7 @@ body {
 	height: 100%;
 	padding: var(--safe-area-top) var(--body-padding) var(--safe-area-bottom);
 	box-sizing: border-box;
+	overflow: hidden;
 	user-select: none;
 	-webkit-user-select: none;
 	touch-action: none;
