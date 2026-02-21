@@ -24,6 +24,7 @@ export class Game {
     this.footer = new Footer(this);
     this.table = new Table();
     this.storage = new Storage(this.namespace);
+    this.cardHeight = (this.columnWidth*(350/250));
 
     this.visualColumns.render();
 
@@ -265,9 +266,8 @@ export class Game {
     // console.log(this.columns);
 
     const longest = this.columns.getLongest() || 13;
-    const cardHeight = (this.columnWidth*(350/250));
 
-    const y = ((this.yGap * (longest - 1)) + cardHeight + 25);
+    const y = ((this.yGap * (longest - 1)) + this.cardHeight + this.xGap);
 
     console.log(longest);
 
