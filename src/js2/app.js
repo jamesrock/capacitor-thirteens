@@ -37,7 +37,7 @@ cardHeight = (columnWidth*(350/250)),
 yGap = getXPercentOfY(19, cardHeight),
 columnHeight = ((yGap * 16) + cardHeight),
 tableWidth = ((columnWidth * (columnCount - fakes)) + (xGap * (columnCount - (1+fakes)))),
-game = window.game = new Game(xGap, yGap, columnWidth, columnHeight),
+game = window.game = new Game(xGap, yGap, columnWidth),
 savedGame = game.getSaved();
 
 let
@@ -180,4 +180,4 @@ document.addEventListener('visibilitychange', () => {
 	};
 });
 
-console.log(getXAsPercentOfY(40, cardHeight));
+// console.log(getXAsPercentOfY(40, cardHeight));

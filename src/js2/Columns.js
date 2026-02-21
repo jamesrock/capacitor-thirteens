@@ -1,4 +1,8 @@
-import { pluckFirst, makeArray } from '@jamesrock/rockjs';
+import { 
+  pluckFirst,
+  sort,
+  makeArray
+} from '@jamesrock/rockjs';
 
 const total = (a) => {
   let bob = 0;
@@ -23,11 +27,7 @@ export class Columns {
   };
   flatten() {
 
-    let out = [];
-    this.columns.forEach((column) => {
-      out = out.concat(column);
-    });
-    return out;
+    return this.columns.flatMap((a) => a);
 
   };
   arrange() {
@@ -80,30 +80,28 @@ export class Columns {
     return out;
 
   };
-  render() {
+  update() {
     
     const values = {
       x: this.game.getXValues(),
       y: this.game.getYValues(),
     };
-
-    this.flattenedColumns = this.flatten();
     
     this.columns.forEach((column, index) => {
-      this.renderColumn(index, values);
+      this.updateColumn(index, values);
     });
 
+    return this;
+
   };
-  renderColumn(column, values) {
+  updateColumn(column, values) {
 
     const {
       cards,
       yGap,
     } = this.game;
 
-    const {
-      flattenedColumns
-    } = this;
+    const flattenedColumns = this.flatten();
 
     // console.log(this.columns[column]);
 
@@ -112,10 +110,22 @@ export class Columns {
       values.y[column] += yGap;
     });
 
+    return this;
+
   };
   fakeWin() {
     
     this.columns = [[], [], [], [], this.columns[0], this.columns[1], this.columns[2], this.columns[3]];
+
+  };
+  getLongest() {
+
+    return pluckFirst(sort([
+      [...this.columns[0]],
+      [...this.columns[1]],
+      [...this.columns[2]],
+      [...this.columns[3]]
+    ].map((column) => column.length), (a) => a, '9-0'));
 
   };
 };

@@ -13,13 +13,12 @@ import { Duration } from './Duration';
 import { Table } from './Table';
 
 export class Game {
-  constructor(xGap, yGap, columnWidth, columnHeight) {
+  constructor(xGap, yGap, columnWidth) {
 
     // console.log(`new Game()`, this);
     this.xGap = xGap;
     this.yGap = yGap;
     this.columnWidth = columnWidth;
-    this.columnHeight = columnHeight;
     this.visualColumns = new VisualColumns(this);
     this.columns = new Columns(this);
     this.footer = new Footer(this);
@@ -230,7 +229,8 @@ export class Game {
   };
   render() {
 
-    this.columns.render();
+    this.columns.update();
+    this.visualColumns.update();
     this.save();
     return this;
 
@@ -262,11 +262,16 @@ export class Game {
   };
   getYValues() {
 
-    const {
-      columnHeight
-    } = this;
+    // console.log(this.columns);
 
-    return isPortrait() ? [0,0,0,0,columnHeight,columnHeight,columnHeight,columnHeight] : [0,0,0,0,0,0,0,0];
+    const longest = this.columns.getLongest() || 13;
+    const cardHeight = (this.columnWidth*(350/250));
+
+    const y = ((this.yGap * (longest - 1)) + cardHeight + 25);
+
+    console.log(longest);
+
+    return isPortrait() ? [0,0,0,0,y,y,y,y] : [0,0,0,0,0,0,0,0];
 
   };
   columnsToCheckForWin = [0, 1, 2, 3];

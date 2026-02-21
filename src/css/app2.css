@@ -49,6 +49,7 @@ body {
 }
 
 .column {
+	transition: top 0.25s;
 	height: var(--column-height);
 	position: absolute;
 	background-image: linear-gradient(rgba(0, 0, 0, 0.2), transparent 50%);
