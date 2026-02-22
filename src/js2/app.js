@@ -11,7 +11,6 @@ import {
 	limit
 } from '@jamesrock/rockjs';
 import { Capacitor } from '@capacitor/core';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { Game } from './Game';
 import interact from 'interactjs';
 
@@ -62,8 +61,6 @@ else {
 };
 
 // console.log('game', game);
-
-SplashScreen.hide();
 
 interact('.card').draggable({
 	listeners: {
