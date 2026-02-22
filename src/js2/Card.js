@@ -9,12 +9,6 @@ suits = [
   'H',
   'S'
 ],
-suitIcons = {
-  'C': '&#9827;&#65038;',
-  'D': '&#9830;&#65038;',
-  'H': '&#9829;&#65038;',
-  'S': '&#9824;&#65038;'
-},
 suitColours = {
   'C': 'black',
   'D': 'red',
@@ -63,7 +57,6 @@ export class Card extends DisplayObject {
     this.rawValue = rawValues[value];
     this.id = `${this.value}${this.suit}`;
     this.color = suitColours[this.suit];
-    this.icon = suitIcons[this.suit];
     this.node = this.make();
 
   };
@@ -97,20 +90,10 @@ export class Card extends DisplayObject {
     return node;
 
   };
-  make2() {
-
-    const node = createNode('div', 'card');
-
-    node.innerHTML = this.getDisplayName();
-    node.classList.add(this.color);
-
-    return node;
-
-  };
   setDropped(a) {
 
     this.dropped = a;
-    this.node.setAttribute('data-dropped', this.dropped);
+    this.setProp('dropped', this.dropped);
     return this;
 
   };

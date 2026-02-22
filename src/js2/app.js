@@ -21,7 +21,6 @@ const
 root = document.documentElement,
 mobile = !minWidth(700),
 padding = mobile ? 5 : 20,
-cardPadding = mobile ? 3 : 7,
 borderRadius = mobile ? 5 : 10,
 xGap = mobile ? 10 : 25,
 fakes = isPortrait() ? 1 : 0,
@@ -36,7 +35,7 @@ columnWidth = limit(floorTo((window.innerWidth - (padding * 2) - (xGap * (column
 cardHeight = (columnWidth*(350/250)),
 yGap = getXPercentOfY(19, cardHeight),
 columnHeight = ((yGap * 16) + cardHeight),
-tableWidth = ((columnWidth * (columnCount - fakes)) + (xGap * (columnCount - (1+fakes)))),
+tableWidth = ((columnWidth * (columnCount - fakes)) + (xGap * (columnCount - (1 + fakes)))),
 game = window.game = new Game(xGap, yGap, columnWidth),
 savedGame = game.getSaved();
 
@@ -45,7 +44,6 @@ group = [],
 position = { x: 0, y: 0 };
 
 root.style.setProperty('--card-width', `${columnWidth}px`);
-root.style.setProperty('--card-padding', `${cardPadding}px`);
 root.style.setProperty('--border-radius', `${borderRadius}px`);
 root.style.setProperty('--column-height', `${columnHeight}px`);
 root.style.setProperty('--body-padding', `${padding}px`);
