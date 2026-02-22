@@ -95,6 +95,9 @@ body {
 .stats {
 	padding: 4px;
 	text-shadow: 0 0 2px rgba(0, 0, 0, .5);
+	&[data-active="false"] {
+		opacity: 0;
+	}
 }
 
 .actions,
@@ -113,23 +116,5 @@ button {
 	letter-spacing: 0.25px;
 	&:active {
 		color: yellow;
-	}
-}
-
-.stats-screen {
-	font-size: 0.8em;
-	display: flex;
-	transition: margin-bottom .25s, opacity .25s;
-	justify-content: center;
-	align-items: center;
-	height: 100px;
-	text-shadow: 0 0 2px rgba(0, 0, 0, .5);
-	&[data-open="false"] {
-		margin-bottom: -100px;
-		opacity: 0;
-	}
-	&[data-open="true"] {
-		margin-bottom: 0;
-		opacity: 1;
 	}
 }

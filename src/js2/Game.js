@@ -58,7 +58,7 @@ export class Game {
         this.flash();
       }, 500);
 
-      this.footer.statsScreen.render();
+      this.footer.liveStats.show();
 
     };
 
@@ -132,6 +132,7 @@ export class Game {
     this.fromSave = false;
 
     this.table.setProp('animate', false);
+    this.footer.liveStats.hide();
 
   };
   restart() {
@@ -287,8 +288,9 @@ export class Game {
     
   };
   columnsToCheckForWin = [0, 1, 2, 3];
-  namespace = 'me.jamesrock.thirteens2';
+  namespace = 'me.jamesrock.thirteens';
   bestMoves = 0;
   bestTime = 0;
   fromSave = false;
+  moves = 0;
 };

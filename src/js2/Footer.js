@@ -1,6 +1,5 @@
 import { createButton, createContainer } from '@jamesrock/rockjs';
 import { LiveStats } from './LiveStats';
-import { StatsScreen } from './StatsScreen';
 import { DisplayObject } from './DisplayObject';
 
 export class Footer extends DisplayObject {
@@ -9,7 +8,6 @@ export class Footer extends DisplayObject {
     super();
 
     // console.log(`new Footer()`, this);
-    this.statsScreen = new StatsScreen(game);
     this.liveStats = new LiveStats(game);
     this.game = game;
     this.node = this.make();
@@ -23,7 +21,6 @@ export class Footer extends DisplayObject {
 
     this.liveStats.appendTo(node);
     node.appendChild(actionsNode);
-    this.statsScreen.appendTo(node);
 
     this.getActions().forEach((action) => {
 
@@ -57,12 +54,6 @@ export class Footer extends DisplayObject {
         name: 'restart',
         handler: () => {
           game.restart();
-        }
-      },
-      {
-        name: 'stats',
-        handler: () => {
-          game.footer.statsScreen.toggle();
         }
       }
     ];

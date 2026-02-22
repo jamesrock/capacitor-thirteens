@@ -10,6 +10,8 @@ export class LiveStats extends DisplayObject {
 
     this.game = game;
     this.node = this.make();
+    this.render();
+    this.update();
 
   };
   make() {
@@ -20,36 +22,60 @@ export class LiveStats extends DisplayObject {
   render() {
 
     this.node.innerHTML = `\
-      <div>moves: ${this.game.moves}</div>\
+      <div>${this.game.moves}</div>\
       ${this.game.newBest ? `<div>${this.getNewBestNotification()}</div>` : ''}\
-      <div>${this.game.time ? time.format(this.game.time) : this.game.duration.getDisplay()}</div>`;
+      <div>${time.format(this.game.time || 0)}</div>`;
 
-    this.frameRequest = requestAnimationFrame(() => {
+    this.animationFrame = requestAnimationFrame(() => {
       this.render();
     });
 
   };
   stop() {
 
-    cancelAnimationFrame(this.frameRequest);
+    cancelAnimationFrame(this.animationFrame);
+
+  };
+  toggle() {
+
+    this.active = !this.active;
+    this.update();
+
+  };
+  show() {
+    
+    this.active = true;
+    this.update();
+
+  };
+  hide() {
+    
+    this.active = false;
+    this.update();
+
+  };
+  update() {
+
+    this.setProp('active', this.active);
 
   };
   getNewBestNotification() {
 
     let out = '';
 
-    if (this.game.newBestMoves && this.game.newBestTime) {
+    if(this.game.newBestMoves && this.game.newBestTime) {
       out = 'MOVES AND TIME';
     }
-    else if (this.game.newBestMoves) {
+    else if(this.game.newBestMoves) {
       out = 'MOVES';
     }
-    else if (this.game.newBestTime) {
+    else if(this.game.newBestTime) {
       out = 'TIME';
     };
 
     return `NEW BEST ${out}`;
 
   };
-  frameRequest = null;
+  active = false;
+  animationFrame = null;
 };

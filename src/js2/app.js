@@ -61,9 +61,6 @@ else {
 	game.startNew();
 };
 
-game.footer.statsScreen.render();
-game.footer.liveStats.render();
-
 // console.log('game', game);
 
 SplashScreen.hide();
