@@ -163,12 +163,10 @@ interact('.table').dropzone({
 
 document.addEventListener('visibilitychange', () => {
 	if(document.hidden) {
-		// console.log('hidden');
 		game.footer.liveStats.stop();
 		game.save();
 	} 
 	else {
-		// console.log('shown');
 		const saved = game.getSaved();
 		game.setDuration(saved[3]);
 		game.footer.liveStats.render();
