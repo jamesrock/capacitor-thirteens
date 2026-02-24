@@ -1,29 +1,32 @@
 import { 
   Storage,
   getLast,
-  getFirst
+  getFirst,
+  isPortrait,
+  makeArray
  } from '@jamesrock/rockjs';
-import { Cards } from './Cards.js';
-import { Columns } from './Columns.js';
-import { Footer } from './Footer.js';
-import { Duration } from './Duration.js';
-import { VisualColumns } from './VisualColumns.js';
-import { Table } from './Table.js';
+import { Cards } from './Cards';
+import { Columns } from './Columns';
+import { VisualColumns } from './VisualColumns';
+import { Footer } from './Footer';
+import { Duration } from './Duration';
+import { Table } from './Table';
 
 export class Game {
-  constructor(xGap, yGap, cardWidth, cardHeight) {
+  constructor(xGap, yGap, columnWidth) {
 
     // console.log(`new Game()`, this);
     this.xGap = xGap;
     this.yGap = yGap;
-    this.cardWidth = cardWidth;
-    this.cardHeight = cardHeight;
-    this.cards = new Cards(this);
-    this.columns = new Columns(this);
+    this.columnWidth = columnWidth;
     this.visualColumns = new VisualColumns(this);
+    this.columns = new Columns(this);
     this.footer = new Footer(this);
     this.table = new Table();
     this.storage = new Storage(this.namespace);
+    this.cardHeight = (this.columnWidth*(350/250));
+
+    this.visualColumns.render();
 
   };
   save() {
@@ -35,60 +38,57 @@ export class Game {
       this.moves ++;
     };
 
-    const {
-      saves,
-      moves,
-      shuffledMap,
-      time,
-      duration,
-      bestMoves,
-      bestTime
-    } = this;
-
-    this.storage.set('game', [
-      saves,
-      moves,
-      shuffledMap,
-      time ? time : duration.get(),
-      bestMoves,
-      bestTime
-    ]);
-
-    if(!this.time && this.checkForWin()) {
-
-      // console.log('win!');
+    if(this.checkForWin()) {
 
       this.time = this.duration.get();
 
-      if(!this.bestMoves || this.moves < this.bestMoves) {
+      if(this.moves < this.bestMoves || 500) {
         this.bestMoves = this.moves;
         this.newBest = true;
         this.newBestMoves = true;
       };
 
-      if(!this.bestTime || this.time < this.bestTime) {
+      if(this.time < this.bestTime || (1000*60*60)) {
         this.bestTime = this.time;
         this.newBest = true;
         this.newBestTime = true;
       };
 
-      this.footer.statsScreen.render();
-      this.save();
+      setTimeout(() => {
+        this.flash();
+      }, 500);
+
+      this.footer.liveStats.show();
 
     };
+
+    this.storage.set('game', [
+      this.saves,
+      this.moves,
+      this.shuffledMap,
+      this.time ? this.time : this.duration.get(),
+      this.bestMoves,
+      this.bestTime
+    ]);
 
     // console.log(`saves[${saves.length}]`, saves);
     // console.log(`moves`, moves);
 
-    return saves;
+    return this;
 
   };
   startNew() {
 
-    this.columns = new Columns(this);
-    this.shuffledMap = this.cards.makeShuffledMap();
+    if(this.cards) {
+      this.cards.destroy();
+    };
+
     this.reset();
-    this.updateColumns(true);
+
+    this.columns = new Columns(this);
+    this.cards = new Cards(this);
+    
+    this.updateColumns();
 
   };
   openSaved(game) {
@@ -96,10 +96,12 @@ export class Game {
     this.saves = game[0];
     this.columns = new Columns(this, this.getLastSave());
     this.moves = game[1];
-    this.shuffledMap = game[2];
+    this.cards = new Cards(this, game[2]);
     this.duration = new Duration(game[3]);
     this.bestMoves = game[4];
     this.bestTime = game[5];
+    this.fromSave = true;
+
     this.updateColumns();
 
   };
@@ -127,6 +129,10 @@ export class Game {
     this.newBestMoves = false;
     this.newBestTime = false;
     this.newBest = false;
+    this.fromSave = false;
+
+    this.table.setProp('animate', false);
+    this.footer.liveStats.hide();
 
   };
   restart() {
@@ -135,13 +141,12 @@ export class Game {
       return;
     };
 
-    // console.log('restart', this);
     this.columns = new Columns(this, this.getFirstSave());
     this.reset();
-    this.updateColumns(true);
+    this.updateColumns();
 
   };
-  updateColumns(toDeal) {
+  updateColumns(deal = true) {
 
     const flattenedColumns = this.columns.flatten();
     // console.log('flattenedColumns', flattenedColumns);
@@ -152,8 +157,8 @@ export class Game {
 
       // console.log('columns already defined');
 
-      this.columns.columns.forEach(function(column, index) {
-        column.forEach(function(id) {
+      this.columns.columns.forEach((column, index) => {
+        column.forEach((id) => {
           cardsMap[id].setColumn(index);
         });
       });
@@ -164,19 +169,15 @@ export class Game {
       // console.log('columns NOT already defined');
 
       let column = 0;
-      const $this = this;
 
-      this.shuffledMap.forEach(function(id, index) {
+      this.cards.shuffledMap.forEach((id, index) => {
 
-        const
-        card = cardsMap[id];
+        const card = cardsMap[id];
 
         card.setColumn(column);
-        $this.columns.columns[column].push(id);
+        this.columns.columns[column].push(id);
 
-        const lastCol = (index + 1) % 4;
-
-        if(lastCol === 0) {
+        if(((index + 1) % 4) === 0) {
           column = 0;
         }
         else {
@@ -187,7 +188,13 @@ export class Game {
 
     };
 
-    toDeal ? this.cards.deal() : this.render();
+    if(deal) {
+      this.cards.deal();
+    };
+
+    setTimeout(() => {
+      this.render();
+    }, 0);
 
   };
   undo() {
@@ -196,10 +203,9 @@ export class Game {
       return;
     };
 
-    // console.log('undo');
-    this.saves.pop();
+    this.popSave();
     this.columns = new Columns(this, this.popSave());
-    this.updateColumns();
+    this.updateColumns(false);
 
   };
   checkForWin() {
@@ -211,7 +217,7 @@ export class Game {
       count += columns[index].length;
     });
 
-    return count === 0;
+    return count === 0 && this.moves > 0;
 
   };
   getSaved() {
@@ -221,8 +227,12 @@ export class Game {
   };
   render() {
 
-    this.columns.render();
-    this.save();
+    this.columns.update();
+    this.visualColumns.update();
+    if(!this.fromSave) {
+      this.save();
+    };
+    this.fromSave = false;
     return this;
 
   };
@@ -239,8 +249,48 @@ export class Game {
     return this;
 
   };
+  getXValues() {
+    
+    const {
+      xGap,
+      columnWidth,
+    } = this;
+
+    const bob = isPortrait() ? [0,1,2,3,0,1,2,3] : [0,1,2,3,4,5,6,7];
+
+    return bob.map((a) => ((columnWidth + xGap) * a));
+
+  };
+  getYValues() {
+
+    // console.log(this.columns);
+
+    const longest = this.columns.getLongest();
+
+    let y = ((this.yGap * (longest - 1)) + this.cardHeight + this.xGap);
+
+    if(this.checkForWin()) {
+      y = 0;
+    };
+
+    return isPortrait() ? [0,0,0,0,y,y,y,y] : [0,0,0,0,0,0,0,0];
+
+  };
+  flash() {
+
+    [1,0,1,0,1,0].forEach((bob, index) => {
+      setTimeout(() => {
+        this.table.setProp('flash', !!bob);
+      }, index*500);
+    });
+
+    return this;
+    
+  };
   columnsToCheckForWin = [0, 1, 2, 3];
   namespace = 'me.jamesrock.thirteens';
   bestMoves = 0;
   bestTime = 0;
+  fromSave = false;
+  moves = 0;
 };

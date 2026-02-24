@@ -1,11 +1,13 @@
-import { LiveStats } from './LiveStats.js';
-import { StatsScreen } from './StatsScreen.js';
+import { createButton, createContainer } from '@jamesrock/rockjs';
+import { LiveStats } from './LiveStats';
+import { DisplayObject } from './DisplayObject';
 
-export class Footer {
+export class Footer extends DisplayObject {
   constructor(game) {
 
+    super();
+
     // console.log(`new Footer()`, this);
-    this.statsScreen = new StatsScreen(game);
     this.liveStats = new LiveStats(game);
     this.game = game;
     this.node = this.make();
@@ -14,25 +16,17 @@ export class Footer {
   make() {
 
     const
-    node = document.createElement('div'),
-    actionsNode = document.createElement('div');
-
-    node.classList.add('footer');
-    actionsNode.classList.add('actions');
+    node = createContainer('footer'),
+    actionsNode = createContainer('actions');
 
     this.liveStats.appendTo(node);
     node.appendChild(actionsNode);
-    this.statsScreen.appendTo(node);
 
-    this.getActions().forEach(function(action) {
+    this.getActions().forEach((action) => {
 
-      const
-      button = document.createElement('button');
+      const button = createButton(action.name, 'action');
 
-      button.innerHTML = action.name;
       button.addEventListener('click', action.handler);
-
-      button.classList.add('action');
 
       actionsNode.appendChild(button);
 
@@ -43,40 +37,26 @@ export class Footer {
   };
   getActions() {
 
-    const $this = this;
-
     return [
       {
         name: 'undo',
         handler: () => { 
-          $this.game.undo();
+          game.undo();
         }
       },
       {
         name: 'new',
         handler: () => {
-          $this.game.startNew();
+          game.startNew();
         }
       },
       {
         name: 'restart',
         handler: () => {
-          $this.game.restart();
-        }
-      },
-      {
-        name: 'stats',
-        handler: () => {
-          $this.game.footer.statsScreen.toggle();
+          game.restart();
         }
       }
-    ]
-
-  };
-  appendTo(node) {
-
-    node.appendChild(this.node);
-    return this;
+    ];
 
   };
 };

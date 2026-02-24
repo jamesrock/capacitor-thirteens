@@ -1,36 +1,34 @@
-import { shuffle } from '@jamesrock/rockjs';
-import { Card } from './Card.js';
+import { shuffle, makeArray, getRandom, getLast } from '@jamesrock/rockjs';
+import { Card } from './Card';
 
 export class Cards {
-  constructor(game) {
+  constructor(game, map) {
 
     // console.log(`new Cards()`, this);
     this.game = game;
     this.cards = this.make();
     this.map = this.makeMap();
-    this.shuffledMap = this.makeShuffledMap();
+    this.shuffledMap = map ? map : this.makeShuffledMap();
 
   };
   make() {
 
     var
-    out = [],
-    maxValue = 13,
-    maxSuit = 4;
+    out = [];
 
-    for (var suit = 0; suit < maxSuit; suit++) {
-      for (var value = 0; value < maxValue; value++) {
-        out.push(new Card(suit, value));
-      };
-    };
+    makeArray(13).forEach((value) => {
+      makeArray(4).forEach((suit) => {
+        out.push(new Card(this, suit, value));
+      });
+    });
 
     return out;
 
   };
   makeMap() {
-
+    
     var out = {};
-    this.cards.forEach(function(card) {
+    this.cards.forEach((card) => {
       out[card.id] = card;
     });
     return out;
@@ -43,52 +41,61 @@ export class Cards {
   };
   makeShuffledMap() {
 
-    return this.shuffle(this.cards.map(function(card) {
+    const suits = ['C', 'S', 'D', 'H'];
+    return this.shuffle(this.cards.filter((card) => {
+      return suits.includes(card.suit);
+    }).map((card) => {
       return card.id;
     }));
-
+    
   };
-  render(table) {
+  render() {
 
-    this.cards.forEach(function(card) {
-      card.appendTo(table.node);
+    const { table } = this.game;
+
+    this.shuffledMap.forEach((id) => {
+      this.map[id].appendTo(table.node);
     });
+
+    return this;
 
   };
   deal() {
 
-    const $this = this;
-    const game = this.game;
+    this.render();
 
-    const { cardWidth, xGap } = this.game;
-
-    this.dealt = 0;
-
-    game.shuffledMap.forEach(function(id) {
-      game.cards.map[id].deal($this.dealt, (cardWidth + xGap));
-      $this.dealt ++;
+    const arranged = this.game.columns.arrange();
+    
+    arranged.forEach((id, index) => {
+      this.map[id].preDeal(index);
     });
 
-    setTimeout(function () {
-      game.render();
-    }, 0);
-
     const eventHandler = (e) => {
-      // console.log('eventHandler', this, e.target);
       this.clearDelays();
       e.target.removeEventListener('transitionend', eventHandler);
     };
 
-    this.lastCard = game.cards.map[game.shuffledMap[game.shuffledMap.length - 1]];
-    this.lastCard.node.addEventListener('transitionend', eventHandler);
+    this.map[getLast(arranged)].node.addEventListener('transitionend', eventHandler);
 
   };
   clearDelays() {
 
-    // console.log('clearDelays');
-    this.game.cards.cards.forEach(function(card) {
+    this.game.cards.cards.forEach((card) => {
       card.setDelay(0);
     });
+
+    this.game.table.setProp('animate', true);
+
+    return this;
+
+  };
+  destroy() {
+    
+    this.shuffledMap.forEach((id) => {
+      this.map[id].destroy();
+    });
+
+    return this;
 
   };
   dealt = 0;

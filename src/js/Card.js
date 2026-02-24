@@ -1,3 +1,7 @@
+import { createNode, createSVGNode } from '@jamesrock/rockjs';
+import { DisplayObject } from './DisplayObject';
+import sprite from '../img/sprite.svg';
+
 const 
 suits = [
   'C',
@@ -5,12 +9,6 @@ suits = [
   'H',
   'S'
 ],
-suitIcons = {
-  'C': '&#9827;&#65038;',
-  'D': '&#9830;&#65038;',
-  'H': '&#9829;&#65038;',
-  'S': '&#9824;&#65038;'
-},
 suitColours = {
   'C': 'black',
   'D': 'red',
@@ -48,15 +46,17 @@ rawValues = [
   13
 ];
 
-export class Card {
-  constructor(suit, value) {
+export class Card extends DisplayObject {
+  constructor(deck, suit, value) {
 
+    super();
+
+    this.deck = deck;
     this.suit = suits[suit];
     this.value = values[value];
     this.rawValue = rawValues[value];
     this.id = `${this.value}${this.suit}`;
     this.color = suitColours[this.suit];
-    this.icon = suitIcons[this.suit];
     this.node = this.make();
 
   };
@@ -74,15 +74,18 @@ export class Card {
   };
   make() {
 
-    var
-    node = document.createElement('div');
+    const
+		node = createNode('div', 'card'),
+    svg = createSVGNode('svg'),
+		use = createSVGNode('use');
 
-    node.innerHTML = this.getDisplayName();
+		use.setAttribute('href', `${sprite}#${this.suit}${this.value}`);
 
-    node.classList.add('card');
-    node.classList.add(this.color);
     node.setAttribute('data-id', this.id);
     node.setAttribute('data-dropped', this.dropped);
+
+    svg.append(use);
+    node.append(svg);
 
     return node;
 
@@ -90,7 +93,7 @@ export class Card {
   setDropped(a) {
 
     this.dropped = a;
-    this.node.setAttribute('data-dropped', this.dropped);
+    this.setProp('dropped', this.dropped);
     return this;
 
   };
@@ -98,9 +101,8 @@ export class Card {
 
     if(zIndex < this.node.style.zIndex) {
 
-      const node = this.node;
-      setTimeout(function () {
-        node.style.zIndex = zIndex;
+      setTimeout(() => {
+        this.node.style.zIndex = zIndex;
       }, 250);
 
       return this;
@@ -118,22 +120,16 @@ export class Card {
     return this;
 
   };
-  appendTo(node) {
+  preDeal(index) {
 
-    node.appendChild(this.node);
-    return this;
-
-  };
-  deal(index, adder) {
-
-    const
-    card = this;
-
-    this.setDropped(false).setPosition((adder * this.column), -500);
-
-    setTimeout(function() {
-      card.setDelay(50 * index).setDropped(true);
+    const xValues = this.deck.game.getXValues();
+    
+    this.setPosition((xValues[this.column]), -500).setDropped(true);
+    setTimeout(() => {
+      this.setDelay(50 * index);
     }, 0);
+    
+    return this;
 
   };
   setDelay(delay) {
@@ -142,6 +138,12 @@ export class Card {
     return this;
 
   };
+  destroy() {
+
+    this.node.parentNode.removeChild(this.node);
+    return this;
+
+  };
   column = null;
-  dropped = true;
+  dropped = false;
 };
