@@ -51,14 +51,5 @@ export class Deck extends BaseDeck {
     return this;
 
   };
-  destroy() {
-    
-    this.shuffledMap.forEach((id) => {
-      this.map[id].destroy();
-    });
-
-    return this;
-
-  };
   dealt = 0;
 };
