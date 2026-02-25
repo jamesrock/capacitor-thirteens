@@ -1,68 +1,11 @@
-import { createNode, createSVGNode } from '@jamesrock/rockjs';
-import { DisplayObject } from './DisplayObject';
-import sprite from '/img/sprite.svg';
+import { PlayingCard as BaseCard } from '@jamesrock/rockjs';
 
-const 
-suits = [
-  'C',
-  'D',
-  'H',
-  'S'
-],
-suitColours = {
-  'C': 'black',
-  'D': 'red',
-  'H': 'red',
-  'S': 'black'
-},
-values = [
-  'A',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  'J',
-  'Q',
-  'K'
-],
-rawValues = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7,
-  8,
-  9,
-  10,
-  11,
-  12,
-  13
-];
+export class Card extends BaseCard {
+  constructor(deck, value, suit) {
 
-export class Card extends DisplayObject {
-  constructor(deck, suit, value) {
-
-    super();
-
-    this.deck = deck;
-    this.suit = suits[suit];
-    this.value = values[value];
-    this.rawValue = rawValues[value];
-    this.id = `${this.value}${this.suit}`;
-    this.color = suitColours[this.suit];
-    this.node = this.make();
-
-  };
-  getDisplayName() {
-
-    return `<div class="card-value"><span>${this.value}</span><span>${this.icon}</span></div><div class="card-suit">${this.icon}</div>`;
+    super(deck, value, suit);
+    this.setProp('id', this.id);
+    this.setProp('dropped', this.dropped);
 
   };
   setColumn(column) {
@@ -70,24 +13,6 @@ export class Card extends DisplayObject {
     // console.log(`setColumn(${column})`);
     this.column = column;
     return this;
-
-  };
-  make() {
-
-    const
-		node = createNode('div', 'card'),
-    svg = createSVGNode('svg'),
-		use = createSVGNode('use');
-
-		use.setAttribute('href', `${sprite}#${this.suit}${this.value}`);
-
-    node.setAttribute('data-id', this.id);
-    node.setAttribute('data-dropped', this.dropped);
-
-    svg.append(use);
-    node.append(svg);
-
-    return node;
 
   };
   setDropped(a) {
@@ -135,12 +60,6 @@ export class Card extends DisplayObject {
   setDelay(delay) {
 
     this.node.style.transitionDelay = `${delay}ms`;
-    return this;
-
-  };
-  destroy() {
-
-    this.node.parentNode.removeChild(this.node);
     return this;
 
   };

@@ -5,7 +5,7 @@ import {
   isPortrait,
   makeArray
  } from '@jamesrock/rockjs';
-import { Cards } from './Cards';
+import { Deck } from './Deck';
 import { Columns } from './Columns';
 import { VisualColumns } from './VisualColumns';
 import { Footer } from './Footer';
@@ -65,7 +65,7 @@ export class Game {
     this.storage.set('game', [
       this.saves,
       this.moves,
-      this.shuffledMap,
+      this.cards.makeSaveMap(),
       this.time ? this.time : this.duration.get(),
       this.bestMoves,
       this.bestTime
@@ -86,7 +86,7 @@ export class Game {
     this.reset();
 
     this.columns = new Columns(this);
-    this.cards = new Cards(this);
+    this.cards = new Deck(this);
     
     this.updateColumns();
 
@@ -96,7 +96,7 @@ export class Game {
     this.saves = game[0];
     this.columns = new Columns(this, this.getLastSave());
     this.moves = game[1];
-    this.cards = new Cards(this, game[2]);
+    this.cards = new Deck(this, game[2]);
     this.duration = new Duration(game[3]);
     this.bestMoves = game[4];
     this.bestTime = game[5];
