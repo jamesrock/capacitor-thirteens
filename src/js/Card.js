@@ -1,6 +1,6 @@
 import { createNode, createSVGNode } from '@jamesrock/rockjs';
 import { DisplayObject } from './DisplayObject';
-import sprite from '../img/sprite.svg';
+import sprite from '/img/sprite.svg';
 
 const 
 suits = [
