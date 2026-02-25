@@ -1,5 +1,4 @@
-import { createNode, makeArray } from '@jamesrock/rockjs';
-import { DisplayObject } from './DisplayObject';
+import { DisplayObject, createNode, makeArray } from '@jamesrock/rockjs';
 
 class VisualColumn extends DisplayObject {
   constructor(id) {

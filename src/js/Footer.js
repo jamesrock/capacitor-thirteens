@@ -1,6 +1,5 @@
-import { createButton, createContainer } from '@jamesrock/rockjs';
+import { DisplayObject, createButton, createContainer } from '@jamesrock/rockjs';
 import { LiveStats } from './LiveStats';
-import { DisplayObject } from './DisplayObject';
 
 export class Footer extends DisplayObject {
   constructor(game) {

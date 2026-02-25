@@ -1,5 +1,4 @@
-import { createNode } from '@jamesrock/rockjs';
-import { DisplayObject } from './DisplayObject';
+import { DisplayObject, createNode } from '@jamesrock/rockjs';
 
 export class Table extends DisplayObject {
   constructor() {

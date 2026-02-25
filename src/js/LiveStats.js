@@ -1,5 +1,4 @@
-import { Time, createContainer } from '@jamesrock/rockjs';
-import { DisplayObject } from './DisplayObject';
+import { DisplayObject, Time, createContainer } from '@jamesrock/rockjs';
 
 const time = new Time();
 
