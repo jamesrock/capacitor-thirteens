@@ -51,5 +51,4 @@ export class Deck extends BaseDeck {
     return this;
 
   };
-  dealt = 0;
 };
