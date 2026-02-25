@@ -1,4 +1,4 @@
-import '../css/app2.css';
+import '/css/app.css';
 import { 
 	isPortrait,
 	minWidth,
